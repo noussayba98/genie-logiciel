@@ -1,99 +1,85 @@
 // Liste des commandes passées par les clients
-const data = [
-    { id: 1, n: "Alice", p: "Laptop", x: 900, q: 2, s: "completed", c: "France" },
-    { id: 2, n: "Bob", p: "Mouse", x: 25, q: 3, s: "pending", c: "Germany" },
-    { id: 3, n: "Charlie", p: "Keyboard", x: 80, q: 2, s: "completed", c: "France" },
-    { id: 4, n: "David", p: "Screen", x: 250, q: 1, s: "completed", c: "Spain" },
-    { id: 5, n: "Emma", p: "Headphones", x: 120, q: 2, s: "cancelled", c: "France" },
-    { id: 6, n: "Frank", p: "Tablet", x: 400, q: 2, s: "completed", c: "Germany" },
-    { id: 7, n: "Alice", p: "Phone", x: 700, q: 1, s: "completed", c: "France" },
-    { id: 8, n: "Bob", p: "Cable", x: 15, q: 4, s: "completed", c: "Germany" }
+const commandes = [
+    { id: 1, client: "Alice", produit: "Laptop", prix: 900, quantite: 2, statut: "completed", pays: "France" },
+    { id: 2, client: "Bob", produit: "Mouse", prix: 25, quantite: 3, statut: "pending", pays: "Germany" },
+    { id: 3, client: "Charlie", produit: "Keyboard", prix: 80, quantite: 2, statut: "completed", pays: "France" },
+    { id: 4, client: "David", produit: "Screen", prix: 250, quantite: 1, statut: "completed", pays: "Spain" },
+    { id: 5, client: "Emma", produit: "Headphones", prix: 120, quantite: 2, statut: "cancelled", pays: "France" },
+    { id: 6, client: "Frank", produit: "Tablet", prix: 400, quantite: 2, statut: "completed", pays: "Germany" },
+    { id: 7, client: "Alice", produit: "Phone", prix: 700, quantite: 1, statut: "completed", pays: "France" },
+    { id: 8, client: "Bob", produit: "Cable", prix: 15, quantite: 4, statut: "completed", pays: "Germany" }
 ];
 // Traite les commandes terminées :
 // applique les remises, calcule les frais de livraison
 // et affiche les statistiques des ventes
-function doStuff(a) {
-    let r = [];
-    let t = 0;
+function calculerremise(valeur) {
+    if (valeur > 1000) return valeur = valeur * 0.85;
+    if (valeur > 500) return valeur = valeur * 0.90;
+    if (valeur > 100) return valeur = valeur * 0.95;
+
+    return valeur
+
+}
+function calculerfraislivraison(pays, valeur) {
+    if (valeur > 500) return 0;
+    if (pays === "France") return 5;
+    if (pays === "Germany") return 10;
+    return 15;
+}
+function traitercommandes(commandes) {
+    let commandestraitees = [];
+    let chiffre = 0;
     let nb = 0;
+    for (let i = 0; i < commandes.length; i++) {
+        let commande = commandes[i];
 
-    for (let i = 0; i < a.length; i++) {
-        let o = a[i];
-
-        if (o.s === "completed") {
-            let v = o.x * o.q;
-
-            if (v > 1000) {
-                v = v * 0.85;
-            } else {
-                if (v > 500) {
-                    v = v * 0.90;
-                } else {
-                    if (v > 100) {
-                        v = v * 0.95;
-                    }
-                }
-            }
-
-            let z = 0;
-
-            if (o.c === "France") {
-                z = 5;
-            } else {
-                if (o.c === "Germany") {
-                    z = 10;
-                } else {
-                    z = 15;
-                }
-            }
-
-            if (v > 500) {
-                z = 0;
-            }
-
-            let f = v + z;
-            t = t + f;
+        if (commande.statut === "completed") {
+            let montantapresremise = calculerremise(commande.prix * commande.quantite);
+            let fraislivraison = calculerfraislivraison(commande.pays, montantapresremise);
+            let montantfinal = montantapresremise + fraislivraison;
+            chiffre = chiffre + montantFinal;
             nb = nb + 1;
 
-            r.push({
-                id: o.id,
-                n: o.n,
-                p: o.p,
-                v: f,
-                z: z
+            commandestraitees.push({
+                id: commande.id,
+                client: commande.client,
+                prix: commande.prix,
+                montantapresremise: montantfinal,
+                fraislivraison: fraislivraison
             });
+
         }
     }
 
     console.log("Number:", nb);
-    console.log("Total:", t);
+    console.log("Total:", chiffre);
 
     if (nb > 0) {
-        console.log("Average:", t / nb);
+        console.log("Average:", chiffre / nb);
     } else {
         console.log("Average:", 0);
     }
 
-    return r;
+    return commandestraitees;
 }
 // Recherche toutes les commandes d'un client
-function getThings(a, b) {
+function obtenircommandes(commandes, nomclient) {
     let r = [];
 
-    for (let i = 0; i < a.length; i++) {
-        if (a[i].n === b) {
-            r.push(a[i]);
+    for (let i = 0; i < commandes.length; i++) {
+        if (commandes[i].n === nomclient) {
+            r.push(commandes[i]);
         }
     }
 
     return r;
 }
 // Compte le nombre de commandes ayant un statut donné
-function checkStuff(a, b) {
+function comptercommandeparstatut(commandes, nomclient) {
     let x = 0;
 
-    for (let i = 0; i < a.length; i++) {
-        if (a[i].s === b) {
+    for (let i = 0; i < commandes.length; i++) {
+        if (commandes[i].s === nomclient) {
             x = x + 1;
         }
     }
@@ -101,14 +87,14 @@ function checkStuff(a, b) {
     return x;
 }
 // Récupère les commandes dont le montant brut dépasse 500
-function findThings(a) {
+function Récupèrercommandes(commandes) {
     let r = [];
 
-    for (let i = 0; i < a.length; i++) {
-        let x = a[i].x * a[i].q;
+    for (let i = 0; i < commandes.length; i++) {
+        let x = commandes[i].x * commandes[i].q;
 
         if (x > 500) {
-            r.push(a[i]);
+            r.push(commandes[i]);
         }
     }
 
@@ -116,27 +102,27 @@ function findThings(a) {
 }
 // Calcule le montant brut total des commandes terminées
 // sans remise ni frais de livraison
-function calculateSomething(a) {
+function calculerchiffreaffaire(commandes) {
     let x = 0;
 
-    for (let i = 0; i < a.length; i++) {
-        if (a[i].s === "completed") {
-            x = x + a[i].x * a[i].q;
+    for (let i = 0; i < commandes.length; i++) {
+        if (commandes[i].s === "completed") {
+            x = x + commandes[i].x * commandes[i].q;
         }
     }
 
     return x;
 }
 // Affiche le nom du client et le produit de chaque commande
-function showData(a) {
-    for (let i = 0; i < a.length; i++) {
-        console.log(a[i].n + " bought " + a[i].p);
+function affichercommandes(commandes) {
+    for (let i = 0; i < commandes.length; i++) {
+        console.log(commandes[i].n + " bought " + commandes[i].p);
     }
 }
 
-console.log(doStuff(data));
-console.log(getThings(data, "Alice"));
-console.log(checkStuff(data, "pending"));
-console.log(findThings(data));
-console.log(calculateSomething(data));
-showData(data);
+console.log(traitercommandes(commandes));
+console.log(obtenircommandes(commandes, "Alice"));
+console.log(comptercommandeparstatut(commandes, "pending"));
+console.log(Récupèrercommandes(commandes));
+console.log(calculerchiffreaffaire(commandes));
+affichercommandes(commandes);
