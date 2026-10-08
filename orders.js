@@ -1,3 +1,4 @@
+// Liste des commandes passées par les clients
 const data = [
     { id: 1, n: "Alice", p: "Laptop", x: 900, q: 2, s: "completed", c: "France" },
     { id: 2, n: "Bob", p: "Mouse", x: 25, q: 3, s: "pending", c: "Germany" },
@@ -8,7 +9,9 @@ const data = [
     { id: 7, n: "Alice", p: "Phone", x: 700, q: 1, s: "completed", c: "France" },
     { id: 8, n: "Bob", p: "Cable", x: 15, q: 4, s: "completed", c: "Germany" }
 ];
-
+// Traite les commandes terminées :
+// applique les remises, calcule les frais de livraison
+// et affiche les statistiques des ventes
 function doStuff(a) {
     let r = [];
     let t = 0;
@@ -73,7 +76,7 @@ function doStuff(a) {
 
     return r;
 }
-
+// Recherche toutes les commandes d'un client
 function getThings(a, b) {
     let r = [];
 
@@ -85,7 +88,7 @@ function getThings(a, b) {
 
     return r;
 }
-
+// Compte le nombre de commandes ayant un statut donné
 function checkStuff(a, b) {
     let x = 0;
 
@@ -97,7 +100,7 @@ function checkStuff(a, b) {
 
     return x;
 }
-
+// Récupère les commandes dont le montant brut dépasse 500
 function findThings(a) {
     let r = [];
 
@@ -111,7 +114,8 @@ function findThings(a) {
 
     return r;
 }
-
+// Calcule le montant brut total des commandes terminées
+// sans remise ni frais de livraison
 function calculateSomething(a) {
     let x = 0;
 
@@ -123,7 +127,7 @@ function calculateSomething(a) {
 
     return x;
 }
-
+// Affiche le nom du client et le produit de chaque commande
 function showData(a) {
     for (let i = 0; i < a.length; i++) {
         console.log(a[i].n + " bought " + a[i].p);
