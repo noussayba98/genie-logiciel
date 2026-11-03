@@ -18,3 +18,7 @@ test("plusieurs commandes", function () {
    assert.deepEqual(parse("0X123 0X789 0XABC"),
         ["moveForward", "moveBackward", "stop"]);
         });
+test("compresser le flux", function () {
+   assert.deepEqual(parse("0X123*2 0XABC"),
+        ["moveForward", "moveForward", "stop"]);
+        });
