@@ -9,8 +9,9 @@ class Logger {
     this.writer = writer;
   }
 
-  info(message) {
-    this.writer.write("log.txt", `${message}\n`);
+    info(message) {
+    const timestamp = new Date().toISOString();
+    this.writer.write("log.txt", `${timestamp} : ${message}\n`);
   }
 }
 
