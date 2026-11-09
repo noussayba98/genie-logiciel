@@ -12,8 +12,15 @@ export const accountDAO = {
       firstName: account.firstName,
     }));
   },
+  findAccount(id) {
+    return ACCOUNT_LIST.find((account) => account.id === id);
+  },
   updateAccount(account) {
-
+    const index = ACCOUNT_LIST.findIndex((a) => a.id === account.id);
+    if (index !== -1) {
+      ACCOUNT_LIST[index] = account;
+      console.log("BDD :", ACCOUNT_LIST);
+    }
   },
   retrieveAccount(id) {},
 };
